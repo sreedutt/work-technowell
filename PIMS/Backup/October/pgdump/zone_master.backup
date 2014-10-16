@@ -1,0 +1,37 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.3.5
+-- Dumped by pg_dump version 9.3.5
+-- Started on 2014-10-10 17:26:26
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+SET search_path = public, pg_catalog;
+
+--
+-- TOC entry 2003 (class 0 OID 58281)
+-- Dependencies: 184
+-- Data for Name: zone_master; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY zone_master (zone_id, zone_name_eng, zone_name_hin) FROM stdin;
+1	Zone 1	झोन 1\r\n
+2	Zone 2	झोन 2\r\n
+3	Zone 3	झोन 3\r\n
+4	Zone 4	झोन 4\r\n
+\.
+
+
+-- Completed on 2014-10-10 17:26:26
+
+--
+-- PostgreSQL database dump complete
+--
+

@@ -1,0 +1,43 @@
+﻿create or replace view vw_property_details
+(	zone,
+	ward,
+	new_propertyno,
+	old_propertyno,
+	surv_propertyno,
+	plot_no,
+	owner_name,
+	owner_address,
+	plot_area,
+	property_type,
+	property_subtype,
+	usage_type,
+	usage_subtype,
+	property_age,
+	last_assesdate,
+	current_assesdate,
+	old_rv,
+	old_tax
+)
+as
+select
+	zone,
+	ward,
+	concat(old_propno,'/','new'),
+	old_propno,
+	survey_propno,
+	plotno,
+	concat(title,firstname,middlename,lastname),
+	concat(areaname,city),
+	plot_area,
+	prop_type,
+	prop_subtype,
+	usage_type,
+	usage_subtype,
+	prop_age,
+	last_ass_date,
+	cur_ass_date,
+	0,
+	0
+from
+	svd_propdetails;
+		

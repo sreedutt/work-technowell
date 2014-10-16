@@ -1,0 +1,61 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.3.5
+-- Dumped by pg_dump version 9.3.5
+-- Started on 2014-10-10 17:12:46
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+SET search_path = public, pg_catalog;
+
+--
+-- TOC entry 2004 (class 0 OID 58271)
+-- Dependencies: 182
+-- Data for Name: ratedepr_master; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY ratedepr_master (sl_no, const_class, age_ub, age_lb, depreciation_pc, financial_year, age_factor) FROM stdin;
+1	A	5	0	0.00	2014-2015	0-05
+2	A	10	6	1.00	2014-2015	6-10
+3	A	20	11	10.00	2014-2015	11-20
+4	A	40	21	20.00	2014-2015	21-40
+5	A	60	41	30.00	2014-2015	41-60
+6	A	80	61	40.00	2014-2015	61-80
+8	B	5	0	0.00	2014-2015	0-05
+7	A	150	81	50.00	2014-2015	80 Above
+9	B	10	6	0.00	2014-2015	6-10
+10	B	20	11	10.00	2014-2015	11-20
+11	B	40	21	25.00	2014-2015	21-40
+12	B	60	41	35.00	2014-2015	41-60
+13	B	80	61	50.00	2014-2015	61-80
+14	B	150	81	0.00	2014-2015	80 Above
+15	C	5	0	0.00	2014-2015	0-05
+16	C	10	6	10.00	2014-2015	6-10
+17	C	20	11	15.00	2014-2015	11-20
+18	C	40	21	30.00	2014-2015	21-40
+19	C	60	41	50.00	2014-2015	41-60
+20	C	80	61	0.00	2014-2015	61-80
+21	C	150	81	0.00	2014-2015	80 Above
+22	D	5	0	0.00	2014-2015	0-05
+23	D	10	6	10.00	2014-2015	6-10
+24	D	20	11	25.00	2014-2015	11-20
+25	D	40	21	50.00	2014-2015	21-40
+26	D	60	41	70.00	2014-2015	41-60
+27	D	80	61	0.00	2014-2015	61-80
+28	D	150	81	0.00	2014-2015	80 Above
+\.
+
+
+-- Completed on 2014-10-10 17:12:46
+
+--
+-- PostgreSQL database dump complete
+--
+

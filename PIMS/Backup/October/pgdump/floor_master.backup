@@ -1,0 +1,41 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.3.5
+-- Dumped by pg_dump version 9.3.5
+-- Started on 2014-10-10 16:54:37
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+SET search_path = public, pg_catalog;
+
+--
+-- TOC entry 2003 (class 0 OID 58243)
+-- Dependencies: 177
+-- Data for Name: floor_master; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY floor_master (floor_id, floorname_eng, floorname_hin) FROM stdin;
+1	Ground Floor	 तळ मजला \r\n
+2	First Floor	पहिला मजला \r\n
+3	Second Floor	दुसरा मजला \r\n
+4	Third Floor	तिसरा मजला \r\n
+5	Fourth Floor	चौथा मजला \r\n
+6	Fifth Floor	पाचवा मजला \r\n
+7	Cellar	तळघर \r\n
+8	Open Plot	खुला भूखंड \r\n
+\.
+
+
+-- Completed on 2014-10-10 16:54:37
+
+--
+-- PostgreSQL database dump complete
+--
+

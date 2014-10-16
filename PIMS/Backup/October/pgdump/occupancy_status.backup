@@ -1,0 +1,37 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.3.5
+-- Dumped by pg_dump version 9.3.5
+-- Started on 2014-10-10 16:56:58
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+SET search_path = public, pg_catalog;
+
+--
+-- TOC entry 2003 (class 0 OID 58248)
+-- Dependencies: 178
+-- Data for Name: occupancy_status; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY occupancy_status (occstatus_id, occstatus_name_eng, occstatus_name_hin) FROM stdin;
+3	\N	लिजडं\r\n
+1	Owner	मालक\r\n
+2	Tenant	भाडेकरु\r\n
+4	Others	यादीत नसलेले\r\n
+\.
+
+
+-- Completed on 2014-10-10 16:56:58
+
+--
+-- PostgreSQL database dump complete
+--
+

@@ -1,0 +1,97 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.3.5
+-- Dumped by pg_dump version 9.3.5
+-- Started on 2014-10-10 17:20:37
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+SET search_path = public, pg_catalog;
+
+--
+-- TOC entry 2003 (class 0 OID 58238)
+-- Dependencies: 176
+-- Data for Name: usage_subtype; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY usage_subtype (subtype_id, subtype_name_eng, subtype_name_hin) FROM stdin;
+1	Residential	निवासी\r\n
+29	Private Schools	खाजगी शाळा \r\n
+30	Private College	खाजगी कॉलेज 
+31	Private Medical College	खाजगी मेडिकल कॉलेज \r\n
+32	Church	चर्च \r\n
+33	Gurudwara	गुरुद्वारा \r\n
+52	Other Public / Governmental, Educational and Legisaltive Bodies	इतर सार्वजनिक/शासकिय शैक्षणिक व वैधानिक संस्था \r\n
+34	Jain Mandir	जैन मंदिर \r\n
+35	Masjid	मस्जिद \r\n
+36	Dargah	दरगाह \r\n
+37	Mandir	मंदिर \r\n
+38	Samaj Bhavan	समाज भवन \r\n
+39	Buddhist Vihar	बौद्ध विहार \r\n
+40	Other Religious	इतर धार्मिक \r\n
+41	Government Office	शासकिय कार्यालय  \r\n
+42	Government Hospital	शासकिय इस्पितळ \r\n
+43	Government Hospital	शासकिय दवाखाना \r\n
+44	Government Bungalow / Apartment 	शासकिय बंगला/सदनिका \r\n
+45	Government Hostel	शासकिय होस्टेल \r\n
+46	Other Government Property	इतर शासकिय मालमत्ता \r\n
+47	School Organization	संस्थेची शाळा \r\n
+48	College Institute	संस्थेचे कॉलेज \r\n
+49	Government School	शासकिय शाळा \r\n
+50	Government College	शासकिय कॉलेज \r\n
+51	Government Medical College	शासकिय मेडिकल कॉलेज \r\n
+53	Municipal Apartment	न. प. सदनिका \r\n
+54	Municipal Shop	न. प. दुकान \r\n
+55	Municipal Corporation	न. प. कार्यालय \r\n
+56	Municipal Cistern	न. प. पाण्याची टाकी \r\n
+57	Municipal Public Toilet	न. प. सार्वजनिक शौचालय \r\n
+58	Other Municipal Property	इतर न. प. मालमत्ता \r\n
+59	Public Property	सार्वजनिक मालमत्ता \r\n
+60	Open Plot	खुला भूखंड \r\n
+61	Government Open Plot	शासकिय खुला भूखंड \r\n
+62	Municipal Open Plot	न. प. खुला भूखंड \r\n
+63	Miscellaneous	मिश्र \r\n
+64	Commercial	वाणिज्य\r\n
+2	Shop	दुकान \r\n
+3	Restaurant	रेस्टॉरंट\r\n
+4	Canteen	कॅन्टीन \r\n
+5	Marriage Hall / Mangal Office	लग्न हॉल/मंगल कार्यालय \r\n
+6	Lodge	लॉज\r\n
+7	Hotel	हॉटेल \r\n
+8	Billboards	होर्डिंग \r\n
+9	Cinema Hall	सिनेमागृह\r\n
+10	Theater	नाट्यगृह \r\n
+11	Bank	बँक \r\n
+12	ATM	ए. टी. एम.\r\n
+13	Financial Institution	वित्तिय संस्था \r\n
+14	Private Hospital	खाजगी इस्पितळ (हॉस्पिटल)\r\n
+15	Clinic	क्लिनिक (दवाखाना)\r\n
+16	Nursing Home	नर्सिंग होम \r\n
+17	Bar	बार \r\n
+18	Country Liquor Store	देशी दारू दुकान \r\n
+19	Wine Shop	दारू दुकान (वाईन शाप)\r\n
+20	Industrial (Factory)	औद्योगिक (कारखाना)\r\n
+21	Private Office	खाजगी कार्यालय (ऑफीस)\r\n
+22	Godown	गोडावून \r\n
+23	Mobile Tower	मोबाईल टॉवर\r\n
+24	Marriage Lawn	लग्न लॉन \r\n
+25	Petrol Pump / Gas Pump	पेट्रोल पंप/गैस पंप \r\n
+26	Garden Bar / Restaurant	गार्डन बार/रेस्टॉरंट \r\n
+27	Other Commercial	इतर वाणिज्यिक \r\n
+28	Private Hostel	खाजगी वसतिगृह (होस्टेल)\r\n
+\.
+
+
+-- Completed on 2014-10-10 17:20:37
+
+--
+-- PostgreSQL database dump complete
+--
+

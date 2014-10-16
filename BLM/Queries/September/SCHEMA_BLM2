@@ -1,0 +1,626 @@
+CREATE SCHEMA AUTHORIZATION SCHEMA_BLM
+
+ALTER TABLE BLM_USER_MASTER
+ DROP PRIMARY KEY CASCADE;
+
+DROP TABLE BLM_USER_MASTER CASCADE CONSTRAINTS;
+
+CREATE TABLE BLM_USER_MASTER
+(
+  SL_NO      NUMBER                             NOT NULL,
+  USER_ROLE  VARCHAR2(20 BYTE)                  NOT NULL
+)
+TABLESPACE TS_BLM
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           )
+LOGGING 
+NOCOMPRESS 
+NOCACHE
+NOPARALLEL
+MONITORING;
+
+
+CREATE UNIQUE INDEX USER_MASTER_PK ON BLMUSER.BLM_USER_MASTER
+(SL_NO)
+LOGGING
+TABLESPACE TS_BLM
+PCTFREE    10
+INITRANS   2
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           )
+NOPARALLEL;
+
+
+ALTER TABLE BLM_USER_MASTER ADD (
+  CONSTRAINT USER_MASTER_PK
+  PRIMARY KEY
+  (SL_NO)
+  USING INDEX USER_MASTER_PK
+  ENABLE VALIDATE);
+
+
+
+
+
+ALTER TABLE BLM_USER_AUTH
+ DROP PRIMARY KEY CASCADE;
+
+DROP TABLE BLM_USER_AUTH CASCADE CONSTRAINTS;
+
+CREATE TABLE BLM_USER_AUTH
+(
+  USER_ID    VARCHAR2(50 BYTE)                  NOT NULL,
+  USER_PWD   VARCHAR2(50 BYTE)                  NOT NULL,
+  USER_TYPE  NUMBER                             NOT NULL
+)
+TABLESPACE TS_BLM
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           )
+LOGGING 
+NOCOMPRESS 
+NOCACHE
+NOPARALLEL
+MONITORING;
+
+
+CREATE UNIQUE INDEX USER_AUTH_PK ON BLMUSER.BLM_USER_AUTH
+(USER_ID)
+LOGGING
+TABLESPACE TS_BLM
+PCTFREE    10
+INITRANS   2
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           )
+NOPARALLEL;
+
+
+ALTER TABLE BLM_USER_AUTH ADD (
+  CONSTRAINT USER_AUTH_PK
+  PRIMARY KEY
+  (USER_ID)
+  USING INDEX USER_AUTH_PK
+  ENABLE VALIDATE);
+
+ALTER TABLE BLM_USER_AUTH ADD (
+  CONSTRAINT USER_TYPE_FK 
+  FOREIGN KEY (USER_TYPE) 
+  REFERENCES BLMUSER.BLM_USER_MASTER (SL_NO)
+  ENABLE VALIDATE);
+
+
+
+
+
+DROP TABLE BLM_USER_DETAILS CASCADE CONSTRAINTS;
+
+CREATE TABLE BLM_USER_DETAILS
+(
+  USER_ID         VARCHAR2(50 BYTE)             NOT NULL,
+  USER_NAME       VARCHAR2(30 BYTE)             NOT NULL,
+  USER_CPRNO      NUMBER(20),
+  USER_MOBNO      VARCHAR2(10 BYTE),
+  USER_COUNTRY    VARCHAR2(30 BYTE),
+  USER_STATUS     CHAR(2 BYTE)                  NOT NULL,
+  USER_TIMESTAMP  TIMESTAMP(6)                  NOT NULL,
+  USER_IP         VARCHAR2(20 BYTE)             NOT NULL
+)
+TABLESPACE TS_BLM
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           )
+LOGGING 
+NOCOMPRESS 
+NOCACHE
+NOPARALLEL
+MONITORING;
+
+
+ALTER TABLE BLM_USER_DETAILS ADD (
+  CONSTRAINT USER_ID_FK 
+  FOREIGN KEY (USER_ID) 
+  REFERENCES BLMUSER.BLM_USER_AUTH (USER_ID)
+  ENABLE VALIDATE);
+
+
+
+
+ALTER TABLE BLM_USER_LOG
+ DROP PRIMARY KEY CASCADE;
+
+DROP TABLE BLM_USER_LOG CASCADE CONSTRAINTS;
+
+CREATE TABLE BLM_USER_LOG
+(
+  USER_LOGID    NUMBER                          NOT NULL,
+  USER_ID       VARCHAR2(50 BYTE)               NOT NULL,
+  USER_IP       VARCHAR2(20 BYTE)               NOT NULL,
+  USER_LAT      FLOAT(8)                        NOT NULL,
+  USER_LONG     FLOAT(8),
+  USER_REGTYPE  NUMBER,
+  USER_TMSTMP   TIMESTAMP(6)
+)
+TABLESPACE TS_BLM
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           )
+LOGGING 
+NOCOMPRESS 
+NOCACHE
+NOPARALLEL
+MONITORING;
+
+
+CREATE UNIQUE INDEX USER_LOG_PK ON BLMUSER.BLM_USER_LOG
+(USER_LOGID)
+LOGGING
+TABLESPACE TS_BLM
+PCTFREE    10
+INITRANS   2
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           )
+NOPARALLEL;
+
+
+ALTER TABLE BLM_USER_LOG ADD (
+  CONSTRAINT USER_LOG_PK
+  PRIMARY KEY
+  (USER_LOGID)
+  USING INDEX BLMUSER.USER_LOG_PK
+  ENABLE VALIDATE);
+
+
+
+
+ALTER TABLE BLM_CIOUSER_FAVPOINT
+ DROP PRIMARY KEY CASCADE;
+
+DROP TABLE BLM_CIOUSER_FAVPOINT CASCADE CONSTRAINTS;
+
+CREATE TABLE BLM_CIOUSER_FAVPOINT
+(
+  USER_FP_OBJECTID      NUMBER,
+  USER_FP_ID            VARCHAR2(50 BYTE)       NOT NULL,
+  USER_FP_FAVNAME_ARB   VARCHAR2(50 BYTE)       NOT NULL,
+  USER_FP_FAVNAME_ENG   VARCHAR2(50 BYTE)       NOT NULL,
+  USER_FP_DESC          VARCHAR2(250 BYTE),
+  USER_FP_FEATURE_TYPE  NUMBER                  NOT NULL,
+  USER_FP_POI_TYPE      VARCHAR2(50 BYTE)       NOT NULL,
+  USER_FP_POI_SUBTYPE   VARCHAR2(50 BYTE)       NOT NULL,
+  USER_FP_BLOCKNO       VARCHAR2(50 BYTE)       NOT NULL,
+  USER_FP_ROADNO        VARCHAR2(50 BYTE),
+  USER_FP_BUILDNO       VARCHAR2(50 BYTE),
+  USER_FP_PHOTO         VARCHAR2(200 BYTE),
+  USER_FP_TMSTMP        TIMESTAMP(6)            NOT NULL
+)
+TABLESPACE TS_BLM
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           )
+LOGGING 
+NOCOMPRESS 
+CACHE
+NOPARALLEL
+MONITORING;
+
+
+CREATE UNIQUE INDEX BLM_CIOUSER_FAVPOINT_PK ON BLMUSER.BLM_CIOUSER_FAVPOINT
+(USER_FP_OBJECTID)
+LOGGING
+TABLESPACE TS_BLM
+PCTFREE    10
+INITRANS   2
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           )
+NOPARALLEL;
+
+
+ALTER TABLE BLM_CIOUSER_FAVPOINT ADD (
+  CONSTRAINT BLM_CIOUSER_FAVPOINT_PK
+  PRIMARY KEY
+  (USER_FP_OBJECTID)
+  USING INDEX BLM_CIOUSER_FAVPOINT_PK
+  ENABLE VALIDATE);
+
+ALTER TABLE BLM_CIOUSER_FAVPOINT ADD (
+  CONSTRAINT USERID_FP_FK 
+  FOREIGN KEY (USER_FP_ID) 
+  REFERENCES BLMUSER.BLM_USER_AUTH (USER_ID)
+  ENABLE VALIDATE);
+
+
+
+
+ALTER TABLE BLM_CITZUSER_FAVPOINT
+ DROP PRIMARY KEY CASCADE;
+
+DROP TABLE BLM_CITZUSER_FAVPOINT CASCADE CONSTRAINTS;
+
+CREATE TABLE BLM_CITZUSER_FAVPOINT
+(
+  USER_FP_OBJECTID     NUMBER                   NOT NULL,
+  USER_FP_ID           VARCHAR2(50 BYTE)        NOT NULL,
+  USER_FP_FAVNAME_ARB  VARCHAR2(50 BYTE)        NOT NULL,
+  USER_FP_FAVNAME_ENG  VARCHAR2(50 BYTE)        NOT NULL,
+  USER_FP_DESC         VARCHAR2(250 BYTE),
+  USER_FP_BLOCKNO      VARCHAR2(50 BYTE)        NOT NULL,
+  USER_FP_PHOTO        VARCHAR2(200 BYTE),
+  USER_FP_TMSTMP       TIMESTAMP(6)             NOT NULL
+)
+TABLESPACE TS_BLM
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           )
+LOGGING 
+NOCOMPRESS 
+CACHE
+NOPARALLEL
+MONITORING;
+
+
+CREATE UNIQUE INDEX USER_FAVPOINT_PK ON BLMUSER.BLM_CITZUSER_FAVPOINT
+(USER_FP_OBJECTID)
+LOGGING
+TABLESPACE TS_BLM
+PCTFREE    10
+INITRANS   2
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+           )
+NOPARALLEL;
+
+
+ALTER TABLE BLM_CITZUSER_FAVPOINT ADD (
+  CONSTRAINT USER_FAVPOINT_PK
+  PRIMARY KEY
+  (USER_FP_OBJECTID)
+  USING INDEX BLMUSER.USER_FAVPOINT_PK
+  ENABLE VALIDATE);
+
+ALTER TABLE BLM_CITZUSER_FAVPOINT ADD (
+  CONSTRAINT USER_ID_FP_FK 
+  FOREIGN KEY (USER_FP_ID) 
+  REFERENCES BLMUSER.BLM_USER_AUTH (USER_ID)
+  ENABLE VALIDATE);
+
+
+CREATE OR REPLACE PROCEDURE addFavPoint(
+    result      OUT  NUMBER,
+    inUserId    IN   BLM_CIOUSER_FAVPOINT.USER_FP_ID%TYPE,
+    inFavnameArb IN  BLM_CIOUSER_FAVPOINT.USER_FP_FAVNAME_ARB%TYPE,
+    inFavnameEng IN  BLM_CIOUSER_FAVPOINT.USER_FP_FAVNAME_ENG%TYPE,
+    inDesc      IN   BLM_CIOUSER_FAVPOINT.USER_FP_DESC%TYPE,
+    inBlockNo   IN   BLM_CIOUSER_FAVPOINT.USER_FP_BLOCKNO%TYPE,
+    inPhoto     IN   BLM_CIOUSER_FAVPOINT.USER_FP_PHOTO%TYPE,
+    inFeatureType IN BLM_CIOUSER_FAVPOINT.USER_FP_FEATURE_TYPE%TYPE DEFAULT NULL,
+    inPOIType   IN   BLM_CIOUSER_FAVPOINT.USER_FP_POI_TYPE%TYPE DEFAULT NULL,
+    inPOISubType IN  BLM_CIOUSER_FAVPOINT.USER_FP_POI_SUBTYPE%TYPE DEFAULT NULL,
+    inRoadNo    IN   BLM_CIOUSER_FAVPOINT.USER_FP_ROADNO%TYPE DEFAULT NULL,
+    inBuildNo   IN   BLM_CIOUSER_FAVPOINT.USER_FP_BUILDNO%TYPE DEFAULT NULL
+    )
+  
+AS
+        
+    FPObjectId NUMBER;
+    userType NUMBER;
+    
+
+    BEGIN
+    
+        SELECT SEQ_FPOBJECTID.NEXTVAL INTO FPObjectId FROM DUAL;
+        
+        SELECT USER_TYPE INTO userType FROM BLM_USER_AUTH WHERE USER_ID = inUserId;
+        
+        IF userType = 1
+        THEN
+            INSERT INTO BLM_CIOUSER_FAVPOINT(USER_FP_OBJECTID,
+                                         USER_FP_ID,
+                                         USER_FP_FAVNAME_ARB,
+                                         USER_FP_FAVNAME_ENG,
+                                         USER_FP_DESC,
+                                         USER_FP_FEATURE_TYPE,
+                                         USER_FP_POI_TYPE,
+                                         USER_FP_POI_SUBTYPE,
+                                         USER_FP_BLOCKNO,
+                                         USER_FP_ROADNO,
+                                         USER_FP_BUILDNO,
+                                         USER_FP_PHOTO,
+                                         USER_FP_TMSTMP
+                                        )
+                                        
+            VALUES (FPObjectId,
+                  inUserId,
+                  inFavnameArb,
+                  inFavnameEng,
+                  inDesc,
+                  inFeatureType,
+                  inPOIType,
+                  inPOISubType,
+                  inBlockNo,
+                  inRoadNo,
+                  inBuildNo,
+                  inPhoto,
+                  systimestamp
+                 );
+            result := 1;     
+                 
+        ELSIF userType = 2
+        THEN
+            INSERT INTO BLM_CITZUSER_FAVPOINT(USER_FP_OBJECTID,
+                                          USER_FP_ID,
+                                          USER_FP_FAVNAME_ARB,
+                                          USER_FP_FAVNAME_ENG,
+                                          USER_FP_DESC,
+                                          USER_FP_BLOCKNO,
+                                          USER_FP_PHOTO,
+                                          USER_FP_TMSTMP
+                                         )
+            VALUES (FPObjectId,
+                    inUserId,
+                    inFavnameArb,
+                    inFavnameEng,
+                    inDesc,
+                    inBlockNo,
+                    inPhoto,
+                    systimestamp
+                   );
+            result := 1;
+            
+        ELSE
+            result := 0;
+        END IF;        
+                   
+    END;
+/
+
+
+
+CREATE OR REPLACE PROCEDURE addUser(
+    inUserId IN BLM_USER_DETAILS.USER_ID%TYPE,
+    inUserPwd IN BLM_USER_AUTH.USER_PWD%TYPE,
+    inUserName IN BLM_USER_DETAILS.USER_NAME%TYPE,
+    inUserType IN BLM_USER_AUTH.USER_TYPE%TYPE,
+    inUserCPRNo IN BLM_USER_DETAILS.USER_CPRNO%TYPE,
+    inUserMobNo IN BLM_USER_DETAILS.USER_MOBNO%TYPE,
+    inUserCountry IN BLM_USER_DETAILS.USER_COUNTRY%TYPE,
+    inUserIp IN BLM_USER_DETAILS.USER_IP%TYPE,
+    inUserStatus IN BLM_USER_DETAILS.USER_STATUS%TYPE
+    )
+    
+  AS
+  
+    BEGIN
+    
+        INSERT INTO BLM_USER_AUTH (  USER_ID,
+                                     USER_PWD,
+                                     USER_TYPE
+                                  )
+            VALUES (inUserId,
+                    inUserPwd,
+                    inUserType
+                   );
+                   
+        INSERT INTO BLM_USER_DETAILS ( USER_ID,
+                                       USER_NAME,
+                                       USER_CPRNO,
+                                       USER_MOBNO,
+                                       USER_COUNTRY,
+                                       USER_STATUS,
+                                       USER_TIMESTAMP,
+                                       USER_IP 
+                                     )
+                            
+        VALUES (inUserId,
+                inUserName,
+                inUserCPRNo,
+                inUserMobNo,
+                inUserCountry,
+                inUserStatus,
+                systimestamp,
+                inUserIp
+               );
+               
+    END;
+/
+
+
+CREATE OR REPLACE PROCEDURE validateRegUser(
+    inUserId    IN  BLM_USER_AUTH.USER_ID%TYPE,
+    inUserPwd   IN  BLM_USER_AUTH.USER_PWD%TYPE,
+    inUserIp    IN  BLM_USER_LOG.USER_IP%TYPE,
+    inUserLat   IN  BLM_USER_LOG.USER_LAT%TYPE,
+    inUserLong  IN  BLM_USER_LOG.USER_LONG%TYPE,
+    outUserValidate OUT NUMBER,
+    c_UserLoginDetails    OUT SYS_REFCURSOR
+    )
+ 
+AS
+    R NUMBER;
+    LogId NUMBER;
+
+    BEGIN
+        
+        
+        
+        SELECT COUNT(*) 
+        INTO R
+        FROM BLM_USER_AUTH 
+        WHERE USER_ID = inUserId
+              AND USER_PWD = inUserPwd;
+        
+        SELECT SEQ_LOGID.NEXTVAL INTO LogId FROM DUAL ;      
+        
+        IF R<>0 
+            THEN 
+            
+                OPEN c_UserLoginDetails
+                FOR
+                SELECT USER_NAME,USER_TYPE
+                FROM BLM_USER_DETAILS A,BLM_USER_AUTH B
+                WHERE B.USER_ID = inUserId
+                      AND B.USER_PWD = inUserPwd
+                      AND A.USER_ID = B.USER_ID;
+              
+                --CLOSE c_UserLoginDetails;
+              
+                INSERT INTO BLM_USER_LOG(USER_LOGID,
+                                         USER_ID,
+                                         USER_IP,
+                                         USER_LAT,
+                                         USER_LONG,
+                                         USER_REGTYPE,
+                                         USER_TMSTMP
+                                )
+                    VALUES (LogId,
+                            inUserId,
+                            inUserIp,
+                            inUserLat,
+                            inUserLong,
+                            1,
+                            systimestamp
+                           );
+                                             
+                outUserValidate := 1;           
+        ELSE
+                outUserValidate := 0;
+                   
+        END IF;                     
+        
+    END;
+/
+
+
+CREATE OR REPLACE PROCEDURE validateUnregUser(
+    inUserIp IN BLM_USER_LOG.USER_IP%TYPE,
+    inUserLat IN BLM_USER_LOG.USER_LAT%TYPE,
+    inUserLong IN BLM_USER_LOG.USER_LONG%TYPE,
+    inUserRegType IN BLM_USER_LOG.USER_REGTYPE%TYPE
+    )
+    
+AS
+    LogId NUMBER;
+    
+    BEGIN
+        
+        SELECT SEQ_LOGID.NEXTVAL INTO LogId FROM DUAL ;
+        
+        INSERT INTO BLM_USER_LOG(USER_LOGID,
+                                 USER_ID,
+                                 USER_IP,
+                                 USER_LAT,
+                                 USER_LONG,
+                                 USER_REGTYPE,
+                                 USER_TMSTMP
+                                )   
+          VALUES (LogId,
+                  'User' || LogId || '@blm.com',
+                  inUserIp,
+                  inUserLat,
+                  inUserLong,
+                  0,
+                  systimestamp
+                 );
+    END;
+
+
+
+DROP SEQUENCE SEQ_LOGID;
+
+CREATE SEQUENCE SVDBLM.SEQ_LOGID
+  START WITH 1
+  MAXVALUE 99999999999999999
+  MINVALUE 1
+  NOCYCLE
+  CACHE 20
+  NOORDER;
+
+
+
+DROP SEQUENCE SEQ_FPOBJECTID;
+
+CREATE SEQUENCE SEQ_FPOBJECTID
+  START WITH 1
+  MAXVALUE 9999999999999999
+  MINVALUE 1
+  NOCYCLE
+  CACHE 20
+  NOORDER;
+

@@ -1,0 +1,62 @@
+CREATE OR REPLACE FUNCTION census_data_summary1(in_ward_no text, in_block_no text, in_age integer)
+  RETURNS refcursor AS
+$BODY$
+declare
+	s_result refcursor := 'scur';
+	
+begin
+	open s_result
+	for
+	 select distinct ward_no,
+	 (select COUNT(gender) 
+                from census_details
+                where (gender = 'Male') 
+		   and (ward_no = in_ward_no or in_ward_no = 'All')
+		   and (block_no = in_block_no or in_block_no = 'All')
+		   and (age >= in_age)
+	 ) AS Male,
+	 (select COUNT(gender)as expr1
+                from census_details
+                where (gender = 'Female') 
+		   and (ward_no = in_ward_no or in_ward_no = 'All')
+		   and (block_no = in_block_no or in_block_no = 'All')
+		   and (age >= in_age)
+	 ) AS Female,
+	 (select COUNT(community) as expr2
+                from census_details as comm1
+                where (community = 'SC') 
+		   and (ward_no = in_ward_no or in_ward_no = 'All')
+		   and (block_no = in_block_no or in_block_no = 'All')
+		   and (age >= in_age)
+	 ) AS SC,
+	 (select COUNT(community) as expr3
+                from census_details as comm2
+                where (community = 'BC') 
+		   and (ward_no = in_ward_no or in_ward_no = 'All')
+		   and (block_no = in_block_no or in_block_no = 'All')
+		   and (age >= in_age)
+	 ) AS BC,
+	 (select COUNT(community)as expr4
+                from census_details as comm3
+                where (community = 'GN') 
+		   and (ward_no = in_ward_no or in_ward_no = 'All')
+		   and (block_no = in_block_no or in_block_no = 'All')
+		   and (age >= in_age)
+	 ) AS GN
+               
+	from census_details as voter
+	WHERE (ward_no = in_ward_no or in_ward_no = 'All')
+	group by ward_no;
+
+
+	return s_result;
+
+	
+
+	
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION census_data_summary1(text, text, integer)
+  OWNER TO postgres;

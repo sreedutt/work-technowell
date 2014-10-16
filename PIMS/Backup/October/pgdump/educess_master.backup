@@ -1,0 +1,43 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.3.5
+-- Dumped by pg_dump version 9.3.5
+-- Started on 2014-10-10 16:44:44
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+SET search_path = public, pg_catalog;
+
+--
+-- TOC entry 2003 (class 0 OID 58294)
+-- Dependencies: 186
+-- Data for Name: educess_master; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY educess_master (educess_id, educess_name, rv_up, rv_lb, res_pc, nonres_pc, financial_year) FROM stdin;
+4	Education Cess	6000.00000	3001.00000	5.00	10.00	2014-2015
+5	Education Cess	0.00000	6001.00000	6.00	12.00	2014-2015
+6	E G C	150.00000	75.00000	0.00	1.00	2014-2015
+7	E G C	300.00000	151.00000	0.00	1.50	2014-2015
+8	E G C	3000.00000	301.00000	0.00	2.00	2014-2015
+9	E G C	6000.00000	3001.00000	0.00	2.50	2014-2015
+10	E G C	0.00000	6001.00000	0.00	3.00	2014-2015
+1	Education Cess	150.00000	75.00000	2.00	4.00	2014-2015
+2	Education Cess	300.00000	151.00000	3.00	6.00	2014-2015
+3	Education Cess	3000.00000	301.00000	4.00	8.00	2014-2015
+\.
+
+
+-- Completed on 2014-10-10 16:44:44
+
+--
+-- PostgreSQL database dump complete
+--
+

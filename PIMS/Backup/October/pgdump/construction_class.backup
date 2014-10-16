@@ -1,0 +1,38 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.3.5
+-- Dumped by pg_dump version 9.3.5
+-- Started on 2014-10-10 16:41:26
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+SET search_path = public, pg_catalog;
+
+--
+-- TOC entry 2003 (class 0 OID 58253)
+-- Dependencies: 179
+-- Data for Name: construction_class; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY construction_class (constclass_id, constclass_name_eng, constclass_name_hin) FROM stdin;
+A	RCC	A - (RCC) आर.सी.सी. सिमेंट कॉक्रीट संरचना, स्लैबची घरे, विटा सिमेंटच्या भिंती  \r\n
+B	LBS	B - (LBS) लोडबेअरींग सिमेंट, चुना, दगड, विटाच्या भिंती व स्लैबचे छत  \r\n
+C	TS	C - (TS) विटा सिमेंट/मातीच्या भिंती व टीन, कवेलूचे छत \r\n
+D	TMPS	D - (TMPS) झोपडी, अस्थाई कुडाचे मातीच्या भिंती टिनाचे छत, कच्चे बांधकाम \r\n
+E	OP	E - (OP) खुला भूखंड \r\n
+\.
+
+
+-- Completed on 2014-10-10 16:41:26
+
+--
+-- PostgreSQL database dump complete
+--
+

@@ -1,0 +1,354 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.3.5
+-- Dumped by pg_dump version 9.3.5
+-- Started on 2014-09-18 15:53:24
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 171 (class 3079 OID 11750)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 1944 (class 0 OID 0)
+-- Dependencies: 171
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+--
+-- TOC entry 186 (class 1255 OID 49740)
+-- Name: census_data_search(integer, integer, text, text, text, integer, text); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION census_data_search(in_search_type integer, in_ward_no integer, in_block_no text, in_gender text, in_community text, in_age integer, in_house_no text) RETURNS refcursor
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    result refcursor := 'cur';
+    cmale int;
+    cfemale int;
+    csc int;
+    cgn int;
+    cbc int;
+    ctotal int;
+    
+BEGIN
+	IF in_search_type = 1
+	THEN	
+	   OPEN result
+	   FOR  SELECT * FROM census_details WHERE     (ward_no = in_ward_no OR in_ward_no = 'All')
+						   AND (block_no = in_block_no OR in_block_no = 'All')
+						   AND (gender = in_gender OR in_gender = 'All')
+						   AND (community = in_community  OR in_community = 'All')
+						   AND (age >= in_age OR in_age = 0)
+						   AND (house_no = in_house_no OR in_house_no = 'All');
+	  RETURN result; 					   
+	ELSE
+	 RETURN 1;																			   
+	END IF;    
+	
+END;
+$$;
+
+
+ALTER FUNCTION public.census_data_search(in_search_type integer, in_ward_no integer, in_block_no text, in_gender text, in_community text, in_age integer, in_house_no text) OWNER TO postgres;
+
+--
+-- TOC entry 189 (class 1255 OID 49757)
+-- Name: census_data_summary(integer, text, integer); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION census_data_summary(in_ward_no integer, in_block_no text, in_age integer) RETURNS SETOF refcursor
+    LANGUAGE plpgsql
+    AS $$
+declare
+	r_gender refcursor := 'gcur';
+	r_community refcursor := 'rcur';
+begin
+	open r_gender
+	for select gender,count(1)
+	    from census_details
+	    where (ward_no = in_ward_no or in_ward_no = 0)
+	       and(block_no = in_block_no or in_block_no = 'All')
+	       and(age >= in_age)
+	    group by gender;   
+	return next r_gender;    
+
+	open r_community
+	for select community,count(1)
+	    from census_details
+	    where (ward_no = in_ward_no or in_ward_no = 0)
+	       and(block_no = in_block_no or in_block_no = 'All')
+	       and(age >= in_age)
+	    group by community;   
+	return next r_community;    
+end;
+$$;
+
+
+ALTER FUNCTION public.census_data_summary(in_ward_no integer, in_block_no text, in_age integer) OWNER TO postgres;
+
+--
+-- TOC entry 188 (class 1255 OID 49978)
+-- Name: census_data_summary(text, text, integer); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION census_data_summary(in_ward_no text, in_block_no text, in_age integer) RETURNS SETOF refcursor
+    LANGUAGE plpgsql
+    AS $$
+declare
+	r_gender refcursor := 'gcur';
+	r_community refcursor := 'rcur';
+begin
+	open r_gender
+	for select gender,count(1),ward_no
+	    from census_details
+	    where (ward_no = in_ward_no or in_ward_no = 'All')
+	       and(block_no = in_block_no or in_block_no = 'All')
+	       and(age >= in_age)
+	    group by gender;   
+	return next r_gender;    
+
+	open r_community
+	for select community,count(1),ward_no
+	    from census_details
+	    where (ward_no = in_ward_no or in_ward_no = 'All')
+	       and(block_no = in_block_no or in_block_no = 'All')
+	       and(age >= in_age)
+	    group by community;   
+	return next r_community;    
+end;
+$$;
+
+
+ALTER FUNCTION public.census_data_summary(in_ward_no text, in_block_no text, in_age integer) OWNER TO postgres;
+
+--
+-- TOC entry 185 (class 1255 OID 49739)
+-- Name: censusdatasearch(integer, integer, text, text, text, integer, text); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION censusdatasearch(insearchtype integer, inwardno integer, inblockno text, ingender text, incommunity text, inage integer, inhouseno text) RETURNS refcursor
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    result refcursor := 'cur';
+    cmale int;
+    cfemale int;
+    csc int;
+    cgn int;
+    cbc int;
+    ctotal int;
+    
+BEGIN
+	IF inSearchType = 1
+	THEN	
+	   OPEN result
+	   FOR  SELECT * FROM "CensusDetails" WHERE    ("WardNo" = inWardNo OR inWardNo = 0)
+						   AND ("BlockNo" = inBlockNo OR inBlockNo = 'All')
+						   AND ("Gender" = inGender OR inGender = 'All')
+						   AND ("Community" = inCommunity  OR inCommunity = 'All')
+						   AND ("Age" >= inAge OR inAge = 0)
+						   AND ("HouseNo" = inHouseNo OR inHouseNo = 'All');
+	  RETURN result; 					   
+	ELSE
+
+	   SELECT COUNT(*) from "CensusDetails" INTO cmale WHERE ("WardNo" = inWardNo OR inWardNo = 0)
+							     AND ("BlockNo" = inBlockno OR inBlockNo = 'All')
+							     AND ("Age" >= inAge OR inAge = 0)
+							     AND "Gender" = 'Male';
+							     
+	   SELECT COUNT(*) from "CensusDetails" INTO cfemale WHERE ("WardNo" = inWardNo OR inWardNo = 0)
+							     AND ("BlockNo" = inBlockno OR inBlockNo = 'All')
+							     AND ("Age" >= inAge OR inAge = 0)
+							     AND "Gender" = 'Female';
+							     
+	   SELECT COUNT(*) from "CensusDetails" INTO csc WHERE ("WardNo" = inWardNo OR inWardNo = 0)
+							     AND ("BlockNo" = inBlockno OR inBlockNo = 'All')
+							     AND ("Age" >= inAge OR inAge = 0)
+							     AND "Community" = 'SC';	
+							     						     					     
+	   SELECT COUNT(*) from "CensusDetails" INTO cbc WHERE ("WardNo" = inWardNo OR inWardNo = 0)
+							     AND ("BlockNo" = inBlockno OR inBlockNo = 'All')
+							     AND ("Age" >= inAge OR inAge = 0)
+							     AND "Community" = 'BC';
+
+	   SELECT COUNT(*) from "CensusDetails" INTO cgn WHERE ("WardNo" = inWardNo OR inWardNo = 0)
+							     AND ("BlockNo" = inBlockno OR inBlockNo = 'All')
+							     AND ("Age" >= inAge OR inAge = 0)
+							     AND "Community" = 'GN';
+							     
+	   SELECT COUNT(*) from "CensusDetails" INTO ctotal WHERE ("WardNo" = inWardNo OR inWardNo = 0)
+							     AND ("BlockNo" = inBlockno OR inBlockNo = 'All')
+							     AND ("Age" >= inAge OR inAge = 0);
+								     								     	
+	   					   
+	END IF;    
+	
+END;
+$$;
+
+
+ALTER FUNCTION public.censusdatasearch(insearchtype integer, inwardno integer, inblockno text, ingender text, incommunity text, inage integer, inhouseno text) OWNER TO postgres;
+
+--
+-- TOC entry 184 (class 1255 OID 49738)
+-- Name: censusdatasearch1(integer, integer, text, text, text, integer, text); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION censusdatasearch1(insearchtype integer, inwardno integer, inblockno text, ingender text, incommunity text, inage integer, inhouseno text) RETURNS refcursor
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    result refcursor := 'cur';
+    
+BEGIN
+	IF inSearchType = 1
+	THEN	
+	   OPEN result
+	   FOR  SELECT * FROM "CensusDetails" WHERE    ("WardNo" = inWardNo OR inWardNo = 0)
+						   AND ("BlockNo" = inBlockNo OR inBlockNo = 'All')
+						   AND ("Gender" = inGender OR inGender = 'All')
+						   AND ("Community" = inCommunity  OR inCommunity = 'All')
+						   AND ("Age" >= inAge OR inAge = 0)
+						   AND ("HouseNo" = inHouseNo OR inHouseNo = 'All');
+	  RETURN result; 					   
+	ELSE
+	   return 1;
+	END IF;    
+	
+END;
+$$;
+
+
+ALTER FUNCTION public.censusdatasearch1(insearchtype integer, inwardno integer, inblockno text, ingender text, incommunity text, inage integer, inhouseno text) OWNER TO postgres;
+
+--
+-- TOC entry 187 (class 1255 OID 49756)
+-- Name: cesnsus_data_summary(integer, text, integer); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION cesnsus_data_summary(in_ward_no integer, in_block_no text, in_age integer) RETURNS SETOF refcursor
+    LANGUAGE plpgsql
+    AS $$
+declare
+	r_gender refcursor := 'gcur';
+	r_community refcursor := 'rcur';
+begin
+	open r_gender
+	for select gender,count(1)
+	    from census_details
+	    where (ward_no = in_ward_no or in_ward_no = 0)
+	       and(block_no = in_block_no or in_block_no = 0)
+	       and(age >= in_age)
+	    group by gender;   
+	return next r_gender;    
+
+	open r_community
+	for select community,count(1)
+	    from census_details
+	    where (ward_no = in_ward_no or in_ward_no = 0)
+	       and(block_no = in_block_no or in_block_no = 0)
+	       and(age >= in_age)
+	    group by community;   
+	return next r_community;    
+end;
+$$;
+
+
+ALTER FUNCTION public.cesnsus_data_summary(in_ward_no integer, in_block_no text, in_age integer) OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 170 (class 1259 OID 49728)
+-- Name: census_details; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE census_details (
+    sl_no numeric(10,0) NOT NULL,
+    ward_no numeric(5,0) NOT NULL,
+    block_no character varying(30),
+    house_no character varying(30),
+    u_no numeric(10,0),
+    f_no numeric(10,0),
+    member_name character varying(30),
+    relation_hof character varying(20),
+    age numeric(3,0),
+    gender character varying(20),
+    community character varying(10),
+    remarks character varying(50)
+);
+
+
+ALTER TABLE public.census_details OWNER TO postgres;
+
+--
+-- TOC entry 1936 (class 0 OID 49728)
+-- Dependencies: 170
+-- Data for Name: census_details; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY census_details (sl_no, ward_no, block_no, house_no, u_no, f_no, member_name, relation_hof, age, gender, community, remarks) FROM stdin;
+1	1	B12/1	H201	1	1	Krishan Lal	Head	45	Male	SC	\N
+2	1	B12/1	H201	1	2	Santhosh Devi	Wife	40	Female	SC	\N
+3	1	B12/1	H201	1	3	Deepak Kumar	Son	17	Male	SC	\N
+8	2	B22/1	H202	2	2	Sushma	Wife	30	Female	GN	\N
+9	2	B22/1	H202	2	3	Aryan	Son	8	Male	GN	\N
+12	3	B32/1	H40	4	1	Pawan	Head	40	Male	GN	\N
+13	3	B32/1	H40	4	2	Meena	Wife	35	Female	GN	\N
+7	2	B22/1	H202	5	1	Raj Kumar	Head	35	Male	GN	\N
+4	1	B12/1	H204	1	1	Naveen	Head	55	Male	GN	\N
+6	1	B12/1	H204	5	3	Bharati Devi	Daughter	10	Female	GN	\N
+5	1	B12/1	H204	5	2	Sapna Devi	Daughter	12	Female	GN	\N
+10	1	B12/1	H301/1	3	1	Inder Singh	Head	60	Male	BC	\N
+11	1	B12/1	H301/1	3	2	Sheela	Wife	50	Female	BC	\N
+\.
+
+
+--
+-- TOC entry 1828 (class 2606 OID 49735)
+-- Name: CensusDetails_PK; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY census_details
+    ADD CONSTRAINT "CensusDetails_PK" PRIMARY KEY (sl_no);
+
+
+--
+-- TOC entry 1943 (class 0 OID 0)
+-- Dependencies: 5
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2014-09-18 15:53:25
+
+--
+-- PostgreSQL database dump complete
+--
+

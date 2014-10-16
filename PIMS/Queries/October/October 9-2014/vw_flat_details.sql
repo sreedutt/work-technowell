@@ -1,0 +1,59 @@
+﻿create or replace view vw_flat_details
+(	zone,
+	ward,
+	new_propertyno,
+	old_propertyno,
+	flat_no,
+	occupant_name,
+	owner_name,
+	floor_no,
+	occupant_status,
+	usage_type,
+	usage_subtype,
+	const_class,
+	age_factor,
+	carpet_area,
+	exempted_area,
+	assess_area,
+	annual_rent,
+	rate_sqm,
+	rate_deprciate,
+	alv,
+	alv_op,
+	tenpc_maint,
+	rateable_value,
+	exemption_status,
+	property_id
+)
+as
+select
+	b.zone,
+	b.ward,
+	b.new_propertyno,
+	b.old_propertyno,
+	a.flat_no,
+	concat(a.occu_title,a.occu_fname,a.occu_mname,a.occu_lname),
+	concat(a.owner_title,a.owner_fname,a.owner_mname,a.owner_lname),
+	a.floor_no,
+	a.occupant_status,
+	a.usage_type,
+	a.usage_subtype,
+	a.const_class,
+	a.age_factor,
+	a.carpet_area,
+	a.exempted_area,
+	a.assessable_area,
+	a.annual_rent,
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	'',
+	concat(prop_id,'/',flat_no)
+from
+	svd_flatdetails a, vw_property_details b
+where
+	a.property_no = b.old_propertyno;
+	

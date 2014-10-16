@@ -1,0 +1,104 @@
+-- Function: generate_report(text, text, text)
+
+-- DROP FUNCTION generate_report(text, text, text);
+
+CREATE OR REPLACE FUNCTION generate_report(iward text, izone text, iproperty_no text)
+  RETURNS refcursor AS
+$BODY$
+
+declare
+	refc refcursor;
+	
+begin
+        open refc for select * from vw_generate_report where (ward = iward or iward = 'All')
+							and (zone = izone or izone = 'All')
+							or old_propertyno = iproperty_no;
+	
+	return refc;
+end;
+
+
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION generate_report(text, text, text)
+  OWNER TO postgres;
+
+
+
+
+-- Function: generate_report_flatdetails(text, text, text)
+
+-- DROP FUNCTION generate_report_flatdetails(text, text, text);
+
+CREATE OR REPLACE FUNCTION generate_report_flatdetails(iward text, izone text, iproperty_no text)
+  RETURNS refcursor AS
+$BODY$
+declare
+	refc1 refcursor;
+begin
+	open refc1 for select * from flat_details where ward = iward
+							and zone = izone
+							and old_propertyno = iproperty_no;
+
+	return refc1;
+
+end;
+
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION generate_report_flatdetails(text, text, text)
+  OWNER TO postgres;
+
+
+
+
+-- View: vw_generate_report
+
+-- DROP VIEW vw_generate_report;
+
+CREATE OR REPLACE VIEW vw_generate_report AS 
+ SELECT a.zone,
+    a.ward,
+    a.new_propertyno,
+    a.old_propertyno,
+    a.surv_propertyno,
+    a.plot_no,
+    a.owner_name,
+    a.owner_address,
+    a.plot_area,
+    a.property_type,
+    a.property_subtype,
+    a.usage_type,
+    a.usage_subtype,
+    a.property_age,
+    a.last_assesdate,
+    a.current_assesdate,
+    a.old_rv,
+    a.old_tax,
+    b.total_assessarea,
+    b.total_rvletout,
+    b.total_rvnotletout,
+    b.proprv_res,
+    b.proprv_nres,
+    b.total_proprv,
+    b.property_tax,
+    b.env_tax,
+    b.tree_tax,
+    b.fire_tax,
+    b.special_educess,
+    b.edu_cess,
+    b.egc,
+    b.total_tax,
+    b.financial_year
+   FROM property_details a,
+    property_taxdetails b
+  WHERE a.old_propertyno::text = b.old_propertyno::text AND a.zone::text = b.zone::text AND a.ward::text = b.ward::text;
+
+ALTER TABLE vw_generate_report
+  OWNER TO postgres;
+
+
+
+
